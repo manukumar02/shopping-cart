@@ -1,0 +1,20 @@
+{
+  "name": "sa-shoppingcart-js",
+  "description": "",
+  "main": "server.js",
+  "authors": [
+    "Manu"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "font-awesome": "^4.7.0"
+  }
+}
