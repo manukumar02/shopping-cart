@@ -1,9 +1,12 @@
+body {
+      margin: auto 20px;
+}
 .table>tbody>tr>td, .table>tfoot>tr>td{
   vertical-align: middle;
+  border-bottom: 5px solid #ddd;
 }
 @media screen and (max-width: 600px) {
   table#cart tbody td .form-control{
-    width:20%;
     display: inline !important;
   }
   .actions .btn{
@@ -31,4 +34,104 @@
   table#cart tfoot td{display:block; }
   table#cart tfoot td .btn{display:block;}
 
+  .modify-item {
+        position: absolute;
+    top: 280px;
+  }
+
+}
+
+.cart-title {
+  font-weight: 100;
+}
+th {
+    border-top: 1px solid #ddd;
+    border-bottom: 5px solid #ddd;
+    height: 40px;
+}
+tr {
+  text-align: left;
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+.product-row {
+      display: flex;
+    align-items: baseline;
+}
+#productDescription {
+  position: relative;
+}
+
+.modify-item span {
+  border-right: 1px solid #ddd;
+  padding-right: 5px;
+}
+#subTotal {
+  margin-top: 50px;
+  display: flex;
+}
+.subtotal-calcuation {
+      border-bottom: 5px solid #ddd;
+}
+.left-menu {
+  /*background: red;*/
+}
+.right-menu {
+    width: 65%;
+    margin-left: auto;
+}
+.discount-coupon {
+    border-bottom: 5px solid #ddd;
+    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.subtotal {
+      display: flex;
+    justify-content: space-between;
+    padding: 20px 0;
+}
+.shipping-info, .estimation {
+      display: flex;
+    flex-direction: column;
+}
+.estimated-subtotal {
+  border-top: 1px solid #ddd;
+}
+.checkout {
+  float: right;
+  padding: 20px 0;
+}
+.secure-checkout {
+  float: right;
+  padding: 0px;
+  margin: 0px;
+}
+.continue-shopping {
+  margin-right: 20px;
+}
+.question-cqh {
+      display: flex;
+    flex-direction: column;
+        padding: 20px 0px;
+}
+.apply-button, .checkout-button {
+  padding: 0.3em 1.2em;
+    background: transparent;
+    display: inline-block;
+    text-decoration: none;
+    margin-right: 0.5em;
+    border: 1px solid #333;
+    font: 1em Arial, sans-serif;
+}
+.checkout-button {
+  background: #08c;
+  color: #fff;
+  border: none;
+}
+#promoCode {
+  margin-right: -50px;
 }

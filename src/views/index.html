@@ -1,87 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <title>Shopping Cart</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!--<link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">-->
+    <!--<link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">-->
     <!--[if lt IE 9]>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link href="css/styles.css" rel="stylesheet">
+    <link href="../../public/css/styles.css" rel="stylesheet">
 </head>
+
 <body>
-<div class="container">
-    <h1>Hello Shopping</h1>
-    <div id="productList">
+    <script type="text/x-handlebars-template" data-template-p="shopping-cart">
         <div class="container">
-            <table id="cart" class="table table-hover table-condensed">
-                <thead>
-                <tr>
-                    <th style="width:50%">{{items.length}} Items</th>
-                    <th style="width:10%">Size</th>
-                    <th style="width:8%">Quantity</th>
-                    <th style="width:10%">Price</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td data-th="Product">
-                        <div class="row">
-                            <div class="col-sm-2 hidden-xs"><img src="{{imageUrl}}" alt="{{product-name}}" class="img-responsive"/></div>
-                            <div class="col-sm-10">
-                                <h4 class="nomargin">{{product-name}}</h4>
-                                <p>{{product-desc}}</p>
-                            </div>
+        <h1 class="cart-title">YOUR SHPPING BAG</h1>
+        <div id="productList">
+            <div class="container">
+                <table id="cart" class="table table-hover table-condensed">
+                    <thead>
+                        <tr>
+                            <th>{{items.length}} Items</th>
+                            <th style="text-align:left"></th>
+                            <th style="width:10%">Size</th>
+                            <th style="width:8%">Quantity</th>
+                            <th style="width:10%">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each products}}
+                        <tr>
+                            <td data-th="Product">
+                                <div class="row product-row">
+                                    <div class="col-sm-2 hidden-xs"><img src="{{imageUrl}}" alt="{{product-name}}" class="img-responsive" /></div>
+                                </div>
+                            </td>
+                            <td data-th="ProductDescription" id="productDescription">
+                                <div class="col-sm-10">
+                                    <h4 class="nomargin">{{product-name}}</h4>
+                                    <p>{{product-desc}}</p>
+                                </div>
+                                <div class="modify-item">
+                                    <span class="edit">EDIT</span>
+                                    <span class="remove">X REMOVE</span>
+                                    <span class="save-for-later">SAVE FOR LATER</span>
+                                </div>
+                            </td>
+                            <td data-th="Size">{{size}}</td>
+                            <td data-th="Quantity">
+                                <input type="number" class="form-control text-center" value="{{quantity}}">
+                            </td>
+                            <td data-th="Price">{{price}}</td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="subTotal">
+            <div class="left-menu" style="width:30%">
+                <div class="question-cqh">
+                    <span>Need help</span>
+                    <span class="tax-notification">or have question ?</span>
+                </div>
+                <div class="question-cqh">
+                    <span>Call Customer Service at</span>
+                    <span class="tax-notification">1-800-555-55555</span>
+                </div>
+                <div class="question-cqh">
+                    <a href="#"><span>Chat with one of our stylists</span></a>
+                </div>
+                <div class="question-cqh">
+                    <a href="#"><span>See Return & Exchange policy</span></a>
+                </div>
+            </div>
+            <div class="right-menu">
+                <div class="discount-coupon">
+                    <label for="promoCode">ENTER PROMOTION CODE OR GIFT CARD</label>
+                    <input id="promoCode" type="text" placeholder="Enter Coupon">
+                    <input type="button" value="APPLY" class="apply-button">
+                </div>
+                <div class="subtotal-calcuation">
+                    <div class="subtotal">
+                        <span>SUBTOTAL</span>
+                        <span class="sub-amount">$33.99</span>
+                    </div>
+                    <div class="subtotal">
+                        <span>PROMOTION CODE {{code}} APPLIED</span>
+                        <span class="promo-code-amount">-$3.99</span>
+                    </div>
+                    <div class="subtotal">
+                        <div class="shipping-info">
+                            <span>ESTIMATED SHIPPING*</span>
+                            <span class="shipping-free">You qualify for free shipping because your order is over $50*</span>
                         </div>
-                    </td>
-                    <td data-th="Size">{{size}}</td>
-                    <td data-th="Quantity">
-                        <input type="number" class="form-control text-center" value="{{quantity}}">
-                    </td>
-                    <td data-th="Price">{{price}}</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <hr>
-    <div id="subTotal">
-        <!--<tfoot>-->
-        <!--<tr class="visible-xs">-->
-            <!--<td class="text-center"><strong>Total 1.99</strong></td>-->
-        <!--</tr>-->
-        <!--<tr>-->
-            <!--<td><a href="#" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>-->
-            <!--<td colspan="2" class="hidden-xs"></td>-->
-            <!--<td class="hidden-xs text-center"><strong>Total $1.99</strong></td>-->
-            <!--<td><a href="#" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a></td>-->
-        <!--</tr>-->
-        <!--</tfoot>-->
-        <div class="left-menu" style="width:30%">
-            <h1>Need Help</h1>
-        </div>
-        <div class="right-menu" style="width: 70%">
-            <div class="discount-coupon"></div>
-            <div class="subtotal-calcuation"></div>
-            <div class="checkout"></div>
-        </div>
-    </div>
-</div>
+                        <span class="shipping-charge">FREE</span>
+                    </div>
+                    <div class="subtotal estimated-subtotal">
+                        <div class="estimation">
+                            <span>ESTIMATED TOTAL</span>
+                            <span class="tax-notification">Tax will be applied during checkout</span>
+                        </div>
+                        <span class="estimated-total">$30.00</span>
+                    </div>
+                </div>
+                <div class="checkout">
+                    <a href="#" class="continue-shopping"><span>CONTINUE SHOPPING</span></a>
+                    <input type="button" value="CHECKOUT" class="checkout-button">
+                </div>
+                <div class="secure-checkout">
+                    <img src="" alt="" class="secure-lock">
+                    <p>Secure checkout: Shopping is always safe and secure</p>
+                </div>
 
-<hr>
-
-<footer>
-    <div class="container">
-        <div class="row">
-            <h2>Footer</h2>
+            </div>
         </div>
     </div>
-</footer>
-<!-- script references -->
-<script src="lib/jquery/dist/jquery.min.js"></script>
-<script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    </script>
+
+    <!-- script references -->
+    <script src="lib/jquery/dist/jquery.min.js"></script>
+    <script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
 </body>
+
 </html>
