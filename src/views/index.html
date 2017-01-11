@@ -30,9 +30,11 @@
             </div>
             <div class="body-container">
                 {{#each productsInCart}}
-                <ul class="product-list">
-                    <li class="prd-column items product-image">
-                        <img src="images/assets/T{{p_id}}.jpg" alt="{{p_name}}" class="product-image">
+                <div class="product-list">
+                    <div class="prd-column items product-image">
+                        <div class="prd-image">
+                            <img src="images/assets/T{{p_id}}.jpg" alt="{{p_name}}" class="product-image">
+                        </div>
                         <div class="product-conf">
                             <div class="product-details">
                                 <h3 class="product-name">{{p_name}}</h3>
@@ -45,24 +47,30 @@
                                 <span class="save-for-later">SAVE FOR LATER</span>
                             </div>
                         </div>
-                        <div class="overlay hidden">
-
-                        </div>
-                    </li>
-                    <li class="prd-column size">{{p_selected_size.code}}</li>
-                    <li class="prd-column quantity">
-                        <input type="number" value="{{p_quantity}}" class="item-quantity">
-                    </li>
-                    <li class="prd-column price">{{c_currency}}{{p_price}}</li>
-                    <div class="size-qty-price">
-                        <li class="prd-column m-size">{{p_selected_size.code}}</li>
-                        <li class="prd-column m-quantity">
-                            QTY: <input type="number" value="{{p_quantity}}" class="item-quantity">
-                        </li>
-                        <li class="prd-column m-price">{{c_currency}}{{p_price}}</li>
                     </div>
-                </ul>
+                    <div class="size-qty-price">
+                        <div class="prd-column prd-size">
+                            <span class="m-size">Size: </span>
+                            <span>{{p_selected_size.code}}</span>
+                        </div>
+                        <div class="prd-column prd-quantity">
+                            <label for="" class="m-quantity">QTY: </label>
+                            <input type="number" value="{{p_quantity}}" class="item-quantity">
+                        </div>
+                        <div class="prd-column prd-price">
+                            {{#ifEqual p_originalprice p_price}}
+                            <span>{{c_currency}}{{p_price}}</span>
+                            {{else}}
+                            <span style="text-decoration: line-through;color: #999;">{{c_currency}}{{p_originalprice}}</span>
+                            <span>{{c_currency}}{{p_price}}</span>
+                            {{/ifEqual}}
+                        </div>
+                    </div>
+                </div>
                 {{/each}}
+                <div class="overlay hidden">
+
+                </div>
             </div>
         </div>
 
@@ -92,11 +100,11 @@
                 <div class="subtotal-calcuation">
                     <div class="subtotal">
                         <span>SUBTOTAL</span>
-                        <span class="sub-amount">$33.99</span>
+                        <span class="sub-amount">$0.00</span>
                     </div>
                     <div class="subtotal">
                         <span>PROMOTION CODE {{code}} APPLIED</span>
-                        <span class="promo-code-amount">-$3.99</span>
+                        <span class="promo-code-amount">-$0.00</span>
                     </div>
                     <div class="subtotal">
                         <div class="shipping-info">
@@ -110,7 +118,7 @@
                             <span>ESTIMATED TOTAL</span>
                             <span class="tax-notification">Tax will be applied during checkout</span>
                         </div>
-                        <span class="estimated-total">$30.00</span>
+                        <span class="estimated-total">$0.00</span>
                     </div>
                 </div>
                 <div class="checkout">
@@ -164,7 +172,9 @@
 <script src="lib/jquery/dist/jquery.min.js"></script>
 <!--<script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>-->
 <script src="lib/handlebars/handlebars.js"></script>
+<script src="js/handlebars-template.js"></script>
 <script src="js/main.js"></script>
+<script src="js/sub-total.js"></script>
 </body>
 
 </html>
