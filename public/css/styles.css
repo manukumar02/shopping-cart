@@ -13,6 +13,11 @@ body {
     .header-container {
         display: none;
     }
+    .m-cart-available-items {
+        display: block !important;
+        float: right;
+        margin-top: -40px;
+    }
     /*table#cart tbody td .form-control {*/
         /*display: inline !important;*/
     /*}*/
@@ -95,8 +100,12 @@ body {
 .cart-title {
     font-weight: 100;
 }
+.m-cart-available-items {
+    display: none;
+}
 .product-name {
     text-transform: uppercase;
+    min-width: 180px
 }
 .size-qty-price {
     display: none;
@@ -181,6 +190,7 @@ body {
 .product-image {
     display: flex;
     align-items: flex-start;
+    width: 180px;
 }
 .product-conf {
     margin-left: 20px;
