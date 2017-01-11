@@ -1,7 +1,6 @@
 // https://codepen.io/gabrieleromanato/pen/CqIdh
 
 var Cart = {
-
     $cart: $("#cart"),
     $qtyFields: $("input.qty"),
     $triggerBtn: $("#calc"),
@@ -43,6 +42,5 @@ var Cart = {
 };
 
 $(function () {
-
     Cart.init();
 });

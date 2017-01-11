@@ -11,53 +11,57 @@
     <!--[if lt IE 9]>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link href="../../public/css/styles.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
 </head>
 
 <body>
-    <script type="text/x-handlebars-template" data-template-p="shopping-cart">
-        <div class="container">
-        <h1 class="cart-title">YOUR SHPPING BAG</h1>
+<script type="text/x-handlebars-template" data-template-p="shopping-cart" id="template">
+    <div class="container">
+        <h2 class="cart-title">YOUR SHPPING BAG</h2>
         <div id="productList">
-            <div class="container">
-                <table id="cart" class="table table-hover table-condensed">
-                    <thead>
-                        <tr>
-                            <th>{{items.length}} Items</th>
-                            <th style="text-align:left"></th>
-                            <th style="width:10%">Size</th>
-                            <th style="width:8%">Quantity</th>
-                            <th style="width:10%">Price</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{#each products}}
-                        <tr>
-                            <td data-th="Product">
-                                <div class="row product-row">
-                                    <div class="col-sm-2 hidden-xs"><img src="{{imageUrl}}" alt="{{product-name}}" class="img-responsive" /></div>
-                                </div>
-                            </td>
-                            <td data-th="ProductDescription" id="productDescription">
-                                <div class="col-sm-10">
-                                    <h4 class="nomargin">{{product-name}}</h4>
-                                    <p>{{product-desc}}</p>
-                                </div>
-                                <div class="modify-item">
-                                    <span class="edit">EDIT</span>
-                                    <span class="remove">X REMOVE</span>
-                                    <span class="save-for-later">SAVE FOR LATER</span>
-                                </div>
-                            </td>
-                            <td data-th="Size">{{size}}</td>
-                            <td data-th="Quantity">
-                                <input type="number" class="form-control text-center" value="{{quantity}}">
-                            </td>
-                            <td data-th="Price">{{price}}</td>
-                        </tr>
-                        {{/each}}
-                    </tbody>
-                </table>
+            <div class="header-container">
+                <ul class="product-header">
+                    <li class="prd-column items">{{productsInCart.length}} ITEMS</li>
+                    <li class="prd-column size">SIZE</li>
+                    <li class="prd-column quantity">QTY</li>
+                    <li class="prd-column price">PRICE</li>
+                </ul>
+            </div>
+            <div class="body-container">
+                {{#each productsInCart}}
+                <ul class="product-list">
+                    <li class="prd-column items product-image">
+                        <img src="images/assets/T{{p_id}}.jpg" alt="{{p_name}}" class="product-image">
+                        <div class="product-conf">
+                            <div class="product-details">
+                                <h3 class="product-name">{{p_name}}</h3>
+                                <span class="style">Style #: {{p_style}}</span><br>
+                                <span class="item-colour">Colour: {{p_selected_color.name}}</span>
+                            </div>
+                            <div class="modify-item">
+                                <span class="edit">EDIT</span>
+                                <span class="remove">X REMOVE</span>
+                                <span class="save-for-later">SAVE FOR LATER</span>
+                            </div>
+                        </div>
+                        <div class="overlay hidden">
+
+                        </div>
+                    </li>
+                    <li class="prd-column size">{{p_selected_size.code}}</li>
+                    <li class="prd-column quantity">
+                        <input type="number" value="{{p_quantity}}" class="item-quantity">
+                    </li>
+                    <li class="prd-column price">{{c_currency}}{{p_price}}</li>
+                    <div class="size-qty-price">
+                        <li class="prd-column m-size">{{p_selected_size.code}}</li>
+                        <li class="prd-column m-quantity">
+                            QTY: <input type="number" value="{{p_quantity}}" class="item-quantity">
+                        </li>
+                        <li class="prd-column m-price">{{c_currency}}{{p_price}}</li>
+                    </div>
+                </ul>
+                {{/each}}
             </div>
         </div>
 
@@ -80,7 +84,7 @@
             </div>
             <div class="right-menu">
                 <div class="discount-coupon">
-                    <label for="promoCode">ENTER PROMOTION CODE OR GIFT CARD</label>
+                    <label for="promoCode" class="promo-label">ENTER PROMOTION CODE OR GIFT CARD</label>
                     <input id="promoCode" type="text" placeholder="Enter Coupon">
                     <input type="button" value="APPLY" class="apply-button">
                 </div>
@@ -113,18 +117,53 @@
                     <input type="button" value="CHECKOUT" class="checkout-button">
                 </div>
                 <div class="secure-checkout">
-                    <img src="" alt="" class="secure-lock">
+                    <img src="images/assets/lock.jpg" alt="" class="secure-lock">
                     <p>Secure checkout: Shopping is always safe and secure</p>
                 </div>
 
             </div>
         </div>
     </div>
-    </script>
+</script>
+<script id="overlayModal" type="text/x-handlebars-template">
+    <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-content">
+                <div class="overlay-prd-details">
+                    <h3 class="overlay-product-name">{{p_name}}</h3>
+                    <span class="overlay-prd-price">{{c_currency}}{{p_price}}</span>
+                    <div class="overlay-color-pallet">
+                        {{#each p_available_options}}
+                        <span class="overlay-colors">{{name}}</span>
+                        {{/each}}
+                    </div>
+                    <select name="" id="overlaySize">
+                        {{#each p_available_options}}
+                        <option value="{{sizes}}">{{sizes}}</option>
+                        {{/each}}
+                    </select>
+                    <select name="" id="overlayQty">
+                        <option value="">QTY: 1</option>
+                        <option value="">QTY: 2</option>
+                        <option value="">QTY: 3</option>
+                        <option value="">QTY: 4</option>
+                    </select>
+                </div>
+                <div class="overlay-prd-image">
+                    <img src="images/assets/P1.jpg" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
 
-    <!-- script references -->
-    <script src="lib/jquery/dist/jquery.min.js"></script>
-    <script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- script references -->
+<script src="lib/jquery/dist/jquery.min.js"></script>
+<!--<script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>-->
+<script src="lib/handlebars/handlebars.js"></script>
+<script src="js/main.js"></script>
 </body>
 
 </html>
