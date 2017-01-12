@@ -42,7 +42,7 @@
                                 <span class="item-colour">Colour: {{p_selected_color.name}}</span>
                             </div>
                             <div class="modify-item">
-                                <span class="edit">EDIT</span>
+                                <span data-product="{{p_id}}" class="edit">EDIT</span>
                                 <span class="remove">X REMOVE</span>
                                 <span class="save-for-later">SAVE FOR LATER</span>
                             </div>
@@ -55,7 +55,7 @@
                         </div>
                         <div class="prd-column prd-quantity">
                             <label for="" class="m-quantity">QTY: </label>
-                            <input type="number" value="{{p_quantity}}" class="item-quantity">
+                            <input type="number" value="{{p_quantity}}" class="item-quantity" min="1" max="5">
                         </div>
                         <div class="prd-column prd-price">
                             {{#ifEqual p_originalprice p_price}}
@@ -97,7 +97,7 @@
                     <input id="promoCode" type="text" placeholder="Enter Coupon">
                     <input type="button" value="APPLY" class="apply-button">
                 </div>
-                <div class="subtotal-calcuation">
+                <div class="subtotal-calculation">
                     <div class="subtotal">
                         <span>SUBTOTAL</span>
                         <span class="sub-amount">$0.00</span>
@@ -138,19 +138,21 @@
     <div id="myModal" class="modal">
         <!-- Modal content -->
         <div class="modal-content">
-            <span class="close">&times;</span>
             <div class="modal-content">
                 <div class="overlay-prd-details">
                     <h3 class="overlay-product-name">{{p_name}}</h3>
-                    <span class="overlay-prd-price">{{c_currency}}{{p_price}}</span>
+                    <span class="overlay-prd-price">
+                        <span class="price-symbol">{{c_currency}}</span>
+                        <span class="price-number">{{p_price}}</span>
+                    </span>
                     <div class="overlay-color-pallet">
-                        {{#each p_available_options}}
-                        <span class="overlay-colors">{{name}}</span>
+                        {{#each p_available_options.colors}}
+                        <span class="overlay-colors {{hexcode}}"></span>
                         {{/each}}
                     </div>
                     <select name="" id="overlaySize">
-                        {{#each p_available_options}}
-                        <option value="{{sizes}}">{{sizes}}</option>
+                        {{#each p_available_options.sizes}}
+                        <option value="{{name}}">{{code}}</option>
                         {{/each}}
                     </select>
                     <select name="" id="overlayQty">
@@ -159,11 +161,16 @@
                         <option value="">QTY: 3</option>
                         <option value="">QTY: 4</option>
                     </select>
+                    <div class="add-to-cart">
+                        <input type="button" class="btn-add-to-cart" value="ADD TO BAG">
+                        <a href="#"><span>See product details</span></a>
+                    </div>
                 </div>
                 <div class="overlay-prd-image">
                     <img src="images/assets/P1.jpg" alt="">
                 </div>
             </div>
+            <span class="close">&times;</span>
         </div>
     </div>
 </script>
@@ -174,7 +181,6 @@
 <script src="lib/handlebars/handlebars.js"></script>
 <script src="js/handlebars-template.js"></script>
 <script src="js/main.js"></script>
-<script src="js/sub-total.js"></script>
 </body>
 
 </html>
