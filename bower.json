@@ -1,5 +1,5 @@
 {
-  "name": "sa-shoppingcart-js",
+  "name": "shoppingcart",
   "description": "",
   "main": "server.js",
   "authors": [
@@ -15,7 +15,6 @@
     "tests"
   ],
   "dependencies": {
-    "font-awesome": "^4.7.0",
     "handlebars": "^4.0.5",
     "jquery": "^3.1.1"
   }

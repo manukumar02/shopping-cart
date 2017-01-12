@@ -22,7 +22,7 @@ var Cart = {
                 });
                 var template = Handlebars.compile($('#template').html());
                 var temp = template(data);
-                $(document.body).append(temp);
+                $(document).find('.container').empty().append(temp);
                 $('.edit').on('click', function ($el) {
                     var selectedProduct = Number($($el.currentTarget).attr('data-product'));
                     self.overlay(data, selectedProduct);
@@ -46,12 +46,7 @@ var Cart = {
         var btn = $('.edit');
         var overlay = $('.overlay');
 
-        var span = $('.close')[0];
         overlay.removeClass('hidden');
-
-        // $(document).off().on('click','.edit', function() {
-        //     overlay.removeClass('hidden');
-        // });
 
         $(document).off().on('click', '.close', function () {
             overlay.addClass('hidden');
@@ -75,7 +70,8 @@ var Cart = {
         });
 
         var numberOfItems = data.productsInCart.length;
-        var discount;
+        var discount = 0;
+        var discountAmount = 0;
         if(numberOfItems === 3) {
             discount = 5;
         } else if(numberOfItems > 3 && numberOfItems <= 6) {
@@ -84,12 +80,14 @@ var Cart = {
             discount = 25;
         }
 
-        $('.promo-code-amount').text('-'+discount+'%');
-        $('.sub-amount').text('$' + total.toFixed(2));
+        discountAmount = (total/100) * discount;
+
+        $('.promo-code-amount').html('-<sup>$</sup>'+discountAmount.toFixed(2));
+        $('.sub-amount').html('<sup>$</sup>' + total.toFixed(2));
 
         estTotal = total - ((total/100) * discount);
 
-        $('.estimated-total').text('$'+estTotal.toFixed(2));
+        $('.estimated-total').html('<sup>$</sup>'+estTotal.toFixed(2));
 
     },
 
