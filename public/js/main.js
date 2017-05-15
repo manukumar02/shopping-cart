@@ -40,7 +40,7 @@ var Cart = {
             success: function (result) {
                 $.each(result.productsInCart, function (idx, val) {
                     if (result.productsInCart[idx].p_id = selectedProduct) {
-                        jsonData['productsInCart'] = result.productsInCart[idx];
+                        jsonData = result.productsInCart[idx];
                     }
                 });
                 self.getHandlebarTemplate('overlay.hbs', overlay, jsonData);
@@ -49,15 +49,11 @@ var Cart = {
 
         overlay.removeClass('hidden');
 
-        $(document).off().on('click', '.close', function () {
-            overlay.addClass('hidden');
-        });
 
-        $(document).on('click', function (event) {
-            if (event.target === modal) {
-                overlay.addClass('hidden');
-            }
-        });
+    },
+    removeProduct: function (rmItem) {
+        $('#' + rmItem).remove();
+        
     },
 
     calculate: function (data) {
@@ -119,6 +115,11 @@ var Cart = {
             var selectedProduct = Number($($el.currentTarget).attr('data-product'));
             self.overlay(selectedProduct);
         });
+        $(document).off().on('click', '.remove', function ($el) {
+            var selectedProduct = Number($($el.currentTarget).attr('data-product'));
+            self.removeProduct(selectedProduct);
+        });
+
 
     },
 

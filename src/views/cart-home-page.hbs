@@ -11,7 +11,7 @@
         </div>
         <div class="body-container">
             {{#each productsInCart}}
-            <div class="product-list">
+            <div id="{{p_id}}" class="product-list">
                 <div class="prd-column items product-image">
                     <div class="prd-image">
                         <img src="images/assets/T{{p_id}}.jpg" alt="{{p_name}}" class="product-image">
@@ -24,7 +24,7 @@
                         </div>
                         <div class="modify-item">
                             <span data-product="{{p_id}}" class="edit">EDIT</span>
-                            <span class="remove">X REMOVE</span>
+                            <span data-product="{{p_id}}" class="remove">X REMOVE</span>
                             <span class="save-for-later">SAVE FOR LATER</span>
                         </div>
                     </div>
