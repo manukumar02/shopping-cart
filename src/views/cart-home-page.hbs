@@ -40,10 +40,10 @@
                     </div>
                     <div class="prd-column prd-price">
                         {{#ifEqual p_originalprice p_price}}
-                            <span><sup>{{c_currency}}</sup>{{p_price}}</span>
+                            <sup>{{c_currency}}</sup><span class="priceperquantity">{{p_price}}</span>
                         {{else}}
                             <span style="text-decoration: line-through;color: #999;"><sup>{{c_currency}}</sup>{{p_originalprice}}</span>
-                            <span><sup>{{c_currency}}</sup>{{p_price}}</span>
+                            <sup>{{c_currency}}</sup><span class="priceperquantity">{{p_price}}</span>
                         {{/ifEqual}}
                     </div>
                 </div>
