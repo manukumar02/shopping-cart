@@ -32,7 +32,7 @@
                 <div class="size-qty-price">
                     <div class="prd-column prd-size">
                         <span class="m-size">Size: </span>
-                        <span>{{p_selected_size.code}}</span>
+                        <span class="m-size-value">{{p_selected_size.code}}</span>
                     </div>
                     <div class="prd-column prd-quantity">
                         <label for="" class="m-quantity">QTY: </label>
@@ -40,10 +40,10 @@
                     </div>
                     <div class="prd-column prd-price">
                         {{#ifEqual p_originalprice p_price}}
-                        <span><sup>{{c_currency}}</sup>{{p_price}}</span>
+                            <span><sup>{{c_currency}}</sup>{{p_price}}</span>
                         {{else}}
-                        <span style="text-decoration: line-through;color: #999;"><sup>{{c_currency}}</sup>{{p_originalprice}}</span>
-                        <span><sup>{{c_currency}}</sup>{{p_price}}</span>
+                            <span style="text-decoration: line-through;color: #999;"><sup>{{c_currency}}</sup>{{p_originalprice}}</span>
+                            <span><sup>{{c_currency}}</sup>{{p_price}}</span>
                         {{/ifEqual}}
                     </div>
                 </div>

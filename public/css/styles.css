@@ -139,7 +139,7 @@ body {
 
 .product-image {
     display: flex;
-    height: auto;
+    height: 180px;
     width: 150px;
 }
 
