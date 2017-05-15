@@ -6,10 +6,11 @@ var Cart = {
 		selectedSize: '',
 		selectQuantity: '',
 		selectedProductRm: '',
-		removedPrdId: []
+		removedPrdId: [],
+		arr: []
 	},
 
-	fetchData: function(prodId) {
+	fetchData: function (prodId) {
 		var self = this,
 			template = '',
 			temp = '',
@@ -27,13 +28,13 @@ var Cart = {
 		$.ajax({
 			url: url,
 			dataType: 'json',
-			success: function(data) {
+			success: function (data) {
 				console.log(data);
 				Cart.saCart.fetchedData = data;
-				$.each(Cart.saCart.fetchedData.productsInCart, function(idx, val) {
+				$.each(Cart.saCart.fetchedData.productsInCart, function (idx, val) {
 					if (val.hasOwnProperty('p_price')) {
 						val.p_originalprice = val.p_originalprice.toFixed(2);
-						val.p_price = val.p_price.toFixed(2) * val.p_quantity;
+						val.p_price = (val.p_price * val.p_quantity).toFixed(2);
 					}
 				});
 
@@ -49,13 +50,13 @@ var Cart = {
 
 				self.getHandlebarTemplate('cart-home-page.hbs', $mainContainer, Cart.saCart.fetchedData, true);
 			},
-			error: function(error) {
+			error: function (error) {
 				console.log(error);
 			}
 		});
 	},
 
-	overlay: function(selectedProduct) {
+	overlay: function (selectedProduct) {
 		var self = this,
 			modal = $('#myModal'),
 			btn = $('.edit'),
@@ -63,8 +64,8 @@ var Cart = {
 
 		$.ajax({
 			url: 'http://api.myjson.com/bins/19ynm&callback=callbackFN',
-			success: function(result) {
-				$.each(result.productsInCart, function(idx, val) {
+			success: function (result) {
+				$.each(result.productsInCart, function (idx, val) {
 					if (Number(result.productsInCart[idx].p_id) === selectedProduct) {
 						Cart.saCart.fetchedData = result.productsInCart[idx];
 					}
@@ -77,56 +78,85 @@ var Cart = {
 
 
 	},
-	removeProduct: function(rmItem) {
+	removeProduct: function (rmItem) {
 		var self = this;
 		self.fetchData(rmItem);
 		$('#' + rmItem).remove();
 
 	},
 
-	modifiedPopupData: function(size, qty) {
-		var overlay = $('.overlay'),
-			qtyPlaceholder = $('.prd-quantity'),
-			sizePlaceholder = $('.m-size-value');
+	modifiedPopupData: function (size, qty, productId) {
+		var self = this,
+			overlay = $('.overlay'),
+			price = Number($('#' + productId).find('.priceperquantity').text().substr(1)),
+			totalQtyPr = 0;
 
-		qtyPlaceholder.text(qty);
-		sizePlaceholder.text(size)	
-
+		totalQtyPr = (price * qty).toFixed(2);
+		// qtyPlaceholder.text(qty);
+		// sizePlaceholder.text(size)
+		$('#' + productId).find('.item-quantity').val(qty);
+		$('#' + productId).find('.m-size-value').text(size);
+		$('#' + productId).find('.priceperquantity').html('<sup>$</sup>' + totalQtyPr);
 		if (!overlay.hasClass('.hidden')) {
 			overlay.addClass('hidden');
 		}
-		console.log('Modified on Edit', size, qty);
+		self.calculate();
 	},
 
-	calculate: function(data) {
+	calculate: function (data) {
 		var self = this,
 			total = 0,
-			estTotal = 0;
+			estTotal = 0,
+			discountAmount = 0;
 		//Cart.saCart.numberOfItems = 0;
+		discountAmount = self.disCountLogic();
 
-		$.each(data.productsInCart, function(idx, val) {
-			if (val.hasOwnProperty('p_price')) {
-				total += Number(val.p_price);
-			}
-		});
+		if (typeof data !== 'undefined') {
+			$.each(data.productsInCart, function (idx, val) {
+				if (val.hasOwnProperty('p_price')) {
+					total += Number(val.p_price);
+				}
+			});
+			Cart.saCart.numberOfItems = data.productsInCart.length;
+		} else {
+			Cart.saCart.arr = [];
+			$('.priceperquantity').each(function (index) {
+				Cart.saCart.arr.push(Number($(this).text().substr(1)));
+			});
+			total = Cart.saCart.arr.reduce(function (a, b) {
+				return a + b;
+			}, 0);
+			Cart.saCart.numberOfItems = Cart.saCart.arr.length;
+		}
 
-		Cart.saCart.numberOfItems = data.productsInCart.length;
-		self.disCountLogic(Cart.saCart.numberOfItems, total);
+		//Cart.saCart.numberOfItems = data.productsInCart.length;
+		//self.disCountLogic();
 
 		$('.sub-amount').html('<sup>$</sup>' + total.toFixed(2));
-		estTotal = total - ((total / 100) * self.disCountLogic(Cart.saCart.numberOfItems, total));
-		$('.promo-code-amount').html('-<sup>$</sup>' + self.disCountLogic(Cart.saCart.numberOfItems, total));
+		estTotal = total - ((total / 100) * discountAmount);
+		$('.promo-code-amount').html('-<sup>$</sup>' + discountAmount);
 		$('.estimated-total').html('<sup>$</sup>' + estTotal.toFixed(2));
 	},
 
-	disCountLogic: function(items, total) {
+	disCountLogic: function () {
 		var discount = 0;
 		var discountAmount = 0;
-		if (items === 3) {
+		var total = 0;
+		Cart.saCart.arr = [];
+
+		$('.priceperquantity').each(function (index) {
+			Cart.saCart.arr.push(Number($(this).text().substr(1)));
+		});
+
+		total = Cart.saCart.arr.reduce(function (a, b) {
+			return a + b;
+		}, 0);
+
+		if (Cart.saCart.arr.length === 3) {
 			discount = 5;
-		} else if (items > 3 && items <= 6) {
+		} else if (Cart.saCart.arr.length > 3 && Cart.saCart.arr.length <= 6) {
 			discount = 10;
-		} else if (items > 10) {
+		} else if (Cart.saCart.arr.length > 10) {
 			discount = 25;
 		}
 
@@ -134,18 +164,18 @@ var Cart = {
 		return discountAmount.toFixed(2);
 	},
 
-	getHandlebarTemplate: function(path, target, data, isCalReq) {
+	getHandlebarTemplate: function (path, target, data, isCalReq) {
 		var self = this,
 			source,
 			template;
 
 		$.ajax({
 			url: path,
-			success: function(res) {
+			success: function (res) {
 				source = res;
 				template = Handlebars.compile(source);
 				target.html(template(data));
-				setTimeout(function() {
+				setTimeout(function () {
 					self.registerEventHandler();
 					if (isCalReq) {
 						self.calculate(data);
@@ -155,32 +185,32 @@ var Cart = {
 		});
 	},
 
-	registerEventHandler: function() {
+	registerEventHandler: function () {
 		var self = this;
-		$(document).find('.remove').off('click').on('click', function($el) {
+		$(document).find('.remove').off('click').on('click', function ($el) {
 			Cart.saCart.selectedProductRm = Number($($el.currentTarget).attr('data-product'));
 			self.removeProduct(Cart.saCart.selectedProductRm);
 		});
-		$(document).find('.edit').off('click').on('click', function($el) {
+		$(document).find('.edit').off('click').on('click', function ($el) {
 			Cart.saCart.selectedProduct = Number($($el.currentTarget).attr('data-product'));
 			self.overlay(Cart.saCart.selectedProduct);
 		});
-		$(document).find('.btn-add-to-cart').off('click').on('click', function($el) {
+		$(document).find('.btn-add-to-cart').off('click').on('click', function ($el) {
 			Cart.saCart.selectedSize = $("#overlaySize :selected").text();
 			Cart.saCart.selectQuantity = Number($("#overlayQty :selected").text().substring(5));
-			self.modifiedPopupData(Cart.saCart.selectedSize, Cart.saCart.selectQuantity);
+			self.modifiedPopupData(Cart.saCart.selectedSize, Cart.saCart.selectQuantity, Cart.saCart.selectedProduct);
 		});
-		$(document).find('.close').off('click').on('click', function($el) {
+		$(document).find('.close').off('click').on('click', function ($el) {
 			$($el.currentTarget).parents().closest('.overlay').addClass('hidden');
 		});
 
 	},
 
-	init: function() {
+	init: function () {
 		this.fetchData();
 	}
 };
 
-$(function() {
+$(function () {
 	Cart.init();
 });
