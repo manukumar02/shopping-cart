@@ -1,0 +1,37 @@
+<div id="myModal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-content">
+            <div class="overlay-prd-details">
+                <h3 class="overlay-product-name">{{p_name}}</h3>
+                <span class="overlay-prd-price">
+                        <span class="price-number"><sup class="price-symbol">{{c_currency}}</sup>{{p_price}}</span>
+                </span>
+                <div class="overlay-color-pallet">
+                    {{#each p_available_options.colors}}
+                    <span class="overlay-colors {{name}}"></span> {{/each}}
+                </div>
+                <select name="" id="overlaySize">
+                        <option value="size">SIZE</option>
+                        {{#each p_available_options.sizes}}
+                        <option value="{{name}}">{{code}}</option>
+                        {{/each}}
+                    </select>
+                <select name="" id="overlayQty">
+                        <option value="">QTY: 1</option>
+                        <option value="">QTY: 2</option>
+                        <option value="">QTY: 3</option>
+                        <option value="">QTY: 4</option>
+                    </select>
+                <div class="add-to-cart">
+                    <input type="button" class="btn-add-to-cart" value="EDIT">
+                    <a href="#"><span>See product details</span></a>
+                </div>
+            </div>
+            <div class="overlay-prd-image">
+                <img src="images/assets/P1.jpg" alt="">
+            </div>
+        </div>
+        <span class="close">&times;</span>
+    </div>
+</div>
